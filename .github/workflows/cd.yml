@@ -33,11 +33,11 @@ jobs:
         uses: mindsers/changelog-reader-action@v2
         with:
           version: ${{ steps.build.outputs.version }}
-      - name: Create GitHub release and upload the bundle
+      - name: Create GitHub release and upload the distribution
         uses: softprops/action-gh-release@v1
         with:
           name: ${{ steps.build.outputs.version }}
-          body: ${{ steps.read-changelog.outputs.log_entry }}
+          body: ${{ steps.read-changelog.outputs.changes }}
           draft: false
           prerelease: false
           files: ${{ steps.build.outputs.asset_path }}
