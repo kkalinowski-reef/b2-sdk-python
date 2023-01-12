@@ -178,13 +178,13 @@ def build(session):
     # Set outputs for GitHub Actions
     if CI:
         asset_path = glob('dist/*')[0]
-        print('::set-output name=asset_path::', asset_path, sep='')
+        print(f'asset_path={asset_path}')
 
         asset_name = os.path.basename(asset_path)
-        print('::set-output name=asset_name::', asset_name, sep='')
+        print(f'asset_name={asset_name}')
 
         version = os.environ['GITHUB_REF'].replace('refs/tags/v', '')
-        print('::set-output name=version::', version, sep='')
+        print(f'version={version}')
 
 
 @nox.session(python=PYTHON_DEFAULT_VERSION)
