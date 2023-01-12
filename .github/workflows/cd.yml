@@ -30,7 +30,7 @@ jobs:
         run: nox -vs build >> $GITHUB_OUTPUT
       - name: Read the Changelog
         id: read-changelog
-        uses: mindsers/changelog-reader-action@v1
+        uses: mindsers/changelog-reader-action@v2
         with:
           version: ${{ steps.build.outputs.version }}
       - name: Create GitHub release and upload the bundle
