@@ -53,12 +53,14 @@ jobs:
         run: nox -vs build
   cleanup_buckets:
     needs: lint
-    if: ${{ env.B2_TEST_APPLICATION_KEY != '' && env.B2_TEST_APPLICATION_KEY_ID != '' }}
     env:
       B2_TEST_APPLICATION_KEY: ${{ secrets.B2_TEST_APPLICATION_KEY }}
       B2_TEST_APPLICATION_KEY_ID: ${{ secrets.B2_TEST_APPLICATION_KEY_ID }}
     runs-on: ubuntu-latest
     steps:
+      - name: Secrets validator
+        if: ${{ env.B2_TEST_APPLICATION_KEY == '' || env.B2_TEST_APPLICATION_KEY_ID == '' }}
+        run: echo "Empty B2_TEST_APPLICATION_KEY and/or B2_TEST_APPLICATION_KEY_ID" && exit 1
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -92,6 +94,9 @@ jobs:
           - os: "windows-latest"
             python-version: "pypy-3.8"
     steps:
+      - name: Secrets validator
+        if: ${{ env.B2_TEST_APPLICATION_KEY == '' || env.B2_TEST_APPLICATION_KEY_ID == '' }}
+        run: echo "Empty B2_TEST_APPLICATION_KEY and/or B2_TEST_APPLICATION_KEY_ID" && exit 1
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -107,7 +112,6 @@ jobs:
         env:
           SKIP_COVERAGE: ${{ startsWith(matrix.python-version, env.SKIP_COVERAGE_PYTHON_VERSION_PREFIX) }}
       - name: Run integration tests
-        if: ${{ env.B2_TEST_APPLICATION_KEY != '' && env.B2_TEST_APPLICATION_KEY_ID != '' }}
         run: nox -vs integration -- --dont-cleanup-old-buckets
   doc:
     needs: build
