@@ -189,9 +189,6 @@ def build(session):
         asset_path = glob('dist/*')[0]
         print(f'asset_path={asset_path}')
 
-        asset_name = os.path.basename(asset_path)
-        print(f'asset_name={asset_name}')
-
         version = os.environ['GITHUB_REF'].replace('refs/tags/v', '')
         print(f'version={version}')
 
